@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  web-ui:
+    container_name: infosys-web-ui
+    build:
+      context: ./apps/web-ui
+      dockerfile: Dockerfile
+    ports:
+      - 80:5173
+    depends_on:
+      - api
+    networks:
+      - app_network
+  api:
+    container_name: infosys-api
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    # ports:
+    #   - 8081:8081
+    depends_on:
+      - db
+    networks:
+      - app_network
+  db:
+    container_name: infosys-db
+    image: postgres:15
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    networks:
+      - app_network
+networks:
+  app_network:
+    driver: bridge
