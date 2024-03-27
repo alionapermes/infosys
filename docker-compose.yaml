@@ -6,7 +6,7 @@ services:
       context: ./apps/web-ui
       dockerfile: Dockerfile
     ports:
-      - 80:5173
+      - 80:8080
     depends_on:
       - api
     networks:
@@ -16,8 +16,8 @@ services:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
-    # ports:
-    #   - 8081:8081
+    ports:
+      - 8081:8081
     depends_on:
       - db
     networks:

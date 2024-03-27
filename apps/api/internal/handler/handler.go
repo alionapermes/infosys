@@ -1,43 +1,32 @@
 package handler
 
 import (
-	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 )
 
-const databaseURL = "postgres://postgres:postgres@db:5432/postgres"
-
 var PgConn *pgx.Conn
 
-type Result struct {
-	IsConnected bool `json:"is_connected"`
+func ResponseOK(ctx echo.Context, res any) error {
+	return ctx.JSON(http.StatusOK, res)
 }
 
-type Response struct {
-	Result Result `json:"result"`
+func ResponseConnRequired(ctx echo.Context) error {
+	return ctx.String(http.StatusBadRequest, "db connection required")
 }
 
-func ConnectDb(ctx echo.Context) error {
-	if PgConn == nil {
-		// urlExample := "postgres://username:password@localhost:5432/database_name"
-		conn, err := pgx.Connect(context.Background(), databaseURL)
-		if err != nil {
-			return nil
-		}
+func ResponseInvalidParams(ctx echo.Context, err error) error {
+	msg := fmt.Sprintf("invalid params: %s", err)
+	// log.Errorf("inva bind req: %s; body: %+v", err, ctx.Request().Body)
 
-		ctx.JSON(http.StatusOK, Response{
-			Result: Result{IsConnected: true},
-		})
-		PgConn = conn
-	} else {
-		PgConn.Close(context.Background())
-		ctx.JSON(http.StatusOK, Response{
-			Result: Result{IsConnected: false},
-		})
-	}
+	return ctx.String(http.StatusBadRequest, msg)
+}
 
-	return nil
+func ResponseExecutionFailed(ctx echo.Context, format string, args ...any) error {
+	msg := fmt.Sprintf(format, args...)
+
+	return ctx.String(http.StatusBadRequest, msg)
 }

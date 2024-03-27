@@ -8,6 +8,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	"infosys-api/internal/handler"
+	"infosys-api/internal/handler/conn"
+	"infosys-api/internal/handler/get_tracks"
 )
 
 func main() {
@@ -24,6 +26,7 @@ func main() {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{
 			http.MethodGet,
+			http.MethodPost,
 			http.MethodOptions,
 		},
 		AllowHeaders: []string{
@@ -33,11 +36,12 @@ func main() {
 		},
 	}))
 
-	e.GET("/", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, "Hello, World!")
+	e.GET("/ping", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, "OK")
 	})
 
-	e.GET("/conn", handler.ConnectDb)
+	e.POST("/conn", conn.Handler)
+	e.GET("/tracks", get_tracks.Handler)
 
 	e.Logger.Fatal(e.Start(":8081"))
 }

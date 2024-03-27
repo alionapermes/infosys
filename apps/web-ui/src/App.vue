@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import DbConnector from './components/DbConnector.vue'
 </script>
 
 <template>
-  <HelloWorld/>
-</template>
+  <DbConnector/>
+</template>Db

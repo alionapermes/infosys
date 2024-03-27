@@ -7,13 +7,13 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm i
+RUN npm i vuetify
 
 COPY . .
 RUN npm run build
 
 EXPOSE 8080
-CMD ["npm", "run", "dev"]
-# CMD ["http-server", "dist"]
+CMD ["http-server", "dist"]
 
 # production stage
 # FROM nginx:stable-alpine as prod-stage
