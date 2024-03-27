@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-import { post, Response } from '../util'
-
-import TextInput from './TextInput.vue'
+import { post } from '../../util';
+import { Response } from '.'
+import TextInput from '../TextInput.vue'
 
 const isConnected = ref<boolean>(false)
 
@@ -17,12 +17,7 @@ const changeConnState = () => {
     const data: Response = await response.json()
     console.log(data)
 
-    if (typeof data.result.error !== 'undefined') {
-      console.error(data.result.error)
-      return
-    }
-
-    isConnected.value = data.result.is_connected
+    isConnected.value = data.is_connected
   })
 }
 

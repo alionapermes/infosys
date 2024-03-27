@@ -35,13 +35,13 @@ func Handler(ctx echo.Context) error {
 			req.DbName,
 		)
 
-		return open(ctx, connString)
+		return openConn(ctx, connString)
 	}
 
-	return close(ctx)
+	return closeConn(ctx)
 }
 
-func open(ctx echo.Context, connString string) error {
+func openConn(ctx echo.Context, connString string) error {
 	conn, err := pgx.Connect(context.Background(), connString)
 	if err != nil {
 		return nil
@@ -52,7 +52,7 @@ func open(ctx echo.Context, connString string) error {
 	return handler.ResponseOK(ctx, Response{IsConnected: true})
 }
 
-func close(ctx echo.Context) error {
+func closeConn(ctx echo.Context) error {
 	handler.PgConn.Close(context.Background())
 
 	return handler.ResponseOK(ctx, Response{IsConnected: false})

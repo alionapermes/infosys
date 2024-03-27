@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import DbConnector from './components/DbConnector.vue'
+  import { UiDbConnector } from './components/DbConnector'
 </script>
 
 <template>
-  <DbConnector/>
+  <UiDbConnector/>
 </template>Db
